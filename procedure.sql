@@ -1,16 +1,20 @@
---ця процедура отримує ім'я команды та її бюджет витрачений на гравців щомісячно 
+--ця процедура отримує ім'я команди та виводить суму років гравців
 
-
-CREATE OR REPLACE PROCEDURE count_sum_of_wage_teams(t_name char(50)) 
+CREATE OR REPLACE PROCEDURE count_sum_of_age_of_players(t_name char(50)) 
 LANGUAGE 'plpgsql'
 AS $$
-DECLARE sum_of_wage_teams;
+DECLARE sum_of_age_of_players integer;
 
 BEGIN
-	SELECT player_wage INTO sum_of_wage_teams
-	FROM players,clubs
-	WHERE clubs.team_name = t_name;
-    RAISE INFO 'Team name: %,  Sum of player_wage: %', t_name,  sum_of_wage_teams;
+  SELECT SUM(player_age) INTO sum_of_age_of_players
+  FROM players
+  JOIN clubs
+  using (team_id)
+  WHERE clubs.team_name = t_name;
+    RAISE INFO 'Team name: %,  Sum of player_wage: %', t_name,  sum_of_age_of_players;
 END;
 $$;
-select count_sum_of_wage_teams('Juventus')
+
+
+
+call count_sum_of_age_of_players('Juventus');
