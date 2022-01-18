@@ -1,20 +1,18 @@
---ця процедура отримує ім'я команди та виводить суму років гравців
+--щоб запустити це все треба запустити код з sql-файлів trigger, procedure, function
+--перевірка функції
+Select count_max_age();
 
-CREATE OR REPLACE PROCEDURE count_sum_of_age_of_players(t_name char(50)) 
-LANGUAGE 'plpgsql'
-AS $$
-DECLARE sum_of_age_of_players integer;
-
-BEGIN
-  SELECT SUM(player_age) INTO sum_of_age_of_players
-  FROM players
-  JOIN clubs
-  using (team_id)
-  WHERE clubs.team_name = t_name;
-    RAISE INFO 'Team name: %,  Sum of player_wage: %', t_name,  sum_of_age_of_players;
-END;
-$$;
-
-
-
+--перевірка процедури
 call count_sum_of_age_of_players('Juventus');
+
+--перевірка триггеру
+INSERT INTO Players(player_id,
+                    player_photo,
+                    player_workrate,
+                    player_name,
+                    player_age,
+                    player_wage,   
+                    country_id,
+                    team_id)
+VALUES (150230, 'https://cdn.sofifa.org/players/4/19/1580203.png','Medium/ Medium', 'L. Messii',	     310, 5650000, 0001, 0001);
+select player_name from players
